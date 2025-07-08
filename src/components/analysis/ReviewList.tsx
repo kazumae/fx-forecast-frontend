@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import ImageModal from '@/components/common/ImageModal';
 import { formatDateTime } from '@/lib/utils/date';
+import ReviewComments from './ReviewComments';
 
 interface ReviewImage {
   id: number;
@@ -12,6 +13,20 @@ interface ReviewImage {
   file_size: number;
   mime_type: string;
   created_at: string;
+}
+
+interface ReviewComment {
+  id: number;
+  review_id: number;
+  parent_comment_id: number | null;
+  comment_type: 'question' | 'answer' | 'note';
+  content: string;
+  author: string;
+  is_ai_response: boolean;
+  extra_metadata: any;
+  created_at: string;
+  updated_at: string | null;
+  replies: ReviewComment[];
 }
 
 interface Review {
@@ -120,6 +135,9 @@ export default function ReviewList({ reviews }: ReviewListProps) {
                 </div>
               </div>
             )}
+
+            {/* Review Comments */}
+            <ReviewComments reviewId={review.id} />
           </div>
         );
       })}

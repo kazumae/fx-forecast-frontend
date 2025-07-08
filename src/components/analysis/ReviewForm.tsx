@@ -57,7 +57,9 @@ export default function ReviewForm({ forecastId, onReviewSubmitted }: ReviewForm
       });
 
       if (!response.ok) {
-        throw new Error('レビューの送信に失敗しました');
+        const errorData = await response.json().catch(() => null);
+        const errorMessage = errorData?.error || errorData?.details || response.statusText || 'レビューの送信に失敗しました';
+        throw new Error(errorMessage);
       }
 
       onReviewSubmitted();
